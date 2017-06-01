@@ -1,0 +1,4 @@
+GNU_INSTALL_ROOT := /usr/local/gcc-arm-none-eabi-6_2-2016q4
+GNU_VERSION := 6.2.1
+GNU_PREFIX := arm-none-eabi
+

@@ -1,0 +1,54 @@
+1. Download the GNU toolchain for ARM Cortex-M from https://developer.arm.com/open-source/gnu-toolchain/gnu-rm/downloads
+
+2. Unpack the archive to /usr/local. For me this resulted in the folder /usr/local/gcc-arm-none-eabi-6_2-2016q4
+
+3. Add /usr/local/gcc-arm-none-eabi-6_2-2016q4/bin to the PATH environment variable. I editted .bash_profile in my home folder
+
+4. Execute 'arm-none-eabi-gcc --version' to verify.
+
+5. Execute 'make -v' to verify that make is installed. Make is bundled with Xcode Tools
+
+6. Download the SDK from https://developer.nordicsemi.com/nRF5_SDK/. I downloaded version 10
+
+7. Modify <SDK>/components/toolchain/gcc/Makefile.posix such that the three environment variables are correct for the local system.
+
+8. In a terminal, navigate to .../examples/peripheral/blinky/pca10028/blank/armgcc and execute make
+
+        rm -rf _build
+        echo  Makefile
+        Makefile
+        mkdir _build
+        Compiling file: system_nrf51.c
+        Compiling file: main.c
+        Compiling file: nrf_delay.c
+        Compiling file: gcc_startup_nrf51.s
+        Linking target: nrf51422_xxac.out
+        Preparing: nrf51422_xxac.bin
+        Preparing: nrf51422_xxac.hex
+
+           text	   data	    bss	    dec	    hex	filename
+            984	    104	     28	   1116	    45c	_build/nrf51422_xxac.out
+
+9. Install the nRF5x Command Line Tools from https://www.nordicsemi.com/eng/nordic/Products/nRF51-DK/nRF5x-Command-Line-Tools-OSX/53412. I extracted it to /usr/local/nRF5x-Command-Line-Tools_9_3_1_OSX and added /usr/local/nRF5x-Command-Line-Tools_9_3_1_OSX/nrfjprog to my PATH.
+
+10. Install Segger JLink from https://www.segger.com/downloads/jlink. This produced /Application/SEGGER and symlinks to it from /usr/local/bin     
+
+11. Again from a terminal at  .../examples/peripheral/blinky/pca10028/blank/armgcc, execute the following:
+
+        /* Optional: erase target if not already blank */
+        nrfjprog --family nRF51 -e 
+
+        /* Load FW image to target */
+        nrfjprog --family nRF51 --program _build/<name>.hex
+
+        /* Reset and run */    
+        nrfjprog --family nRF51 -r
+
+
+
+I downloaded rknrfgo from https://sourceforge.net/projects/rknrfgo/ The installer will optionally install command line tools. I allowed it and subsequently discovered that they had been placed in /usr/local/bin. The nrfjprog tool is one of them. I had previously installed nrfjprog as part of the  nRF5x Command Line Tools (step 9 above). It turns out that the two nrfjprog tools are not the same; executing nrfjprog with no arguments displays very different help. After installing rknrfgo I removed /usr/local/nRF5x-Command-Line-Tools_9_3_1_OSX/nrfjprog from the PATH.
+
+I have successfully built the ButtonLed application using Make and have used rknrfgo to load it to the PCA10028. (Strangely, rknrfgo's Program button is disabled but the Both button gets the job done.)
+
+I have not yet circled back to try step 11 in conjuction with the tools at /usr/local/nRF5x-Command-Line-Tools_9_3_1_OSX to load the ButtonLed application. When I do get around to it I will need to learn how to load the soft device (-e seems to wipe everything. Blink does not use a soft device)
+
