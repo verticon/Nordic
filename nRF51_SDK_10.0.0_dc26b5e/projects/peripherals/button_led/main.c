@@ -49,41 +49,40 @@
 
 #define IS_SRVC_CHANGED_CHARACT_PRESENT  1                                          /**< Include or not the service_changed characteristic. if not enabled, the server's database cannot be changed for the lifetime of the device*/
 
-#define DEVICE_NAME                      "ButtonLedDemo"                       /**< Name of device. Will be included in the advertising data. */
-#define MANUFACTURER_NAME                "Verticon"                      			/**< Manufacturer. Will be passed to Device Information Service. */
+#define DEVICE_NAME                     "ButtonLedDemo"                       /**< Name of device. Will be included in the advertising data. */
+#define MANUFACTURER_NAME               "Verticon"                      			/**< Manufacturer. Will be passed to Device Information Service. */
 
-#define LED_PIN_NO            						BSP_LED_1
-#define BUTTON_NO         								BSP_BUTTON_3
+#define BUTTON_NO         				BSP_BUTTON_3
 
-#define APP_ADV_INTERVAL                 300                                        /**< The advertising interval (in units of 0.625 ms. This value corresponds to 25 ms). */
-#define APP_ADV_TIMEOUT_IN_SECONDS       180                                        /**< The advertising timeout in units of seconds. */
+#define APP_ADV_INTERVAL                300                                        /**< The advertising interval (in units of 0.625 ms. This value corresponds to 25 ms). */
+#define APP_ADV_TIMEOUT_IN_SECONDS      180                                        /**< The advertising timeout in units of seconds. */
 
-#define APP_TIMER_PRESCALER              0                                          /**< Value of the RTC1 PRESCALER register. */
-#define APP_TIMER_OP_QUEUE_SIZE          4                                          /**< Size of timer operation queues. */
+#define APP_TIMER_PRESCALER             0                                          /**< Value of the RTC1 PRESCALER register. */
+#define APP_TIMER_OP_QUEUE_SIZE         4                                          /**< Size of timer operation queues. */
 
-#define MIN_CONN_INTERVAL                MSEC_TO_UNITS(100, UNIT_1_25_MS)           /**< Minimum acceptable connection interval (0.1 seconds). */
-#define MAX_CONN_INTERVAL                MSEC_TO_UNITS(200, UNIT_1_25_MS)           /**< Maximum acceptable connection interval (0.2 second). */
-#define SLAVE_LATENCY                    0                                          /**< Slave latency. */
-#define CONN_SUP_TIMEOUT                 MSEC_TO_UNITS(4000, UNIT_10_MS)            /**< Connection supervisory timeout (4 seconds). */
+#define MIN_CONN_INTERVAL               MSEC_TO_UNITS(100, UNIT_1_25_MS)           /**< Minimum acceptable connection interval (0.1 seconds). */
+#define MAX_CONN_INTERVAL               MSEC_TO_UNITS(200, UNIT_1_25_MS)           /**< Maximum acceptable connection interval (0.2 second). */
+#define SLAVE_LATENCY                   0                                          /**< Slave latency. */
+#define CONN_SUP_TIMEOUT                MSEC_TO_UNITS(4000, UNIT_10_MS)            /**< Connection supervisory timeout (4 seconds). */
 
-#define FIRST_CONN_PARAMS_UPDATE_DELAY   APP_TIMER_TICKS(5000, APP_TIMER_PRESCALER) /**< Time from initiating event (connect or start of notification) to first time sd_ble_gap_conn_param_update is called (5 seconds). */
-#define NEXT_CONN_PARAMS_UPDATE_DELAY    APP_TIMER_TICKS(30000, APP_TIMER_PRESCALER)/**< Time between each call to sd_ble_gap_conn_param_update after the first call (30 seconds). */
-#define MAX_CONN_PARAMS_UPDATE_COUNT     3                                          /**< Number of attempts before giving up the connection parameter negotiation. */
+#define FIRST_CONN_PARAMS_UPDATE_DELAY  APP_TIMER_TICKS(5000, APP_TIMER_PRESCALER) /**< Time from initiating event (connect or start of notification) to first time sd_ble_gap_conn_param_update is called (5 seconds). */
+#define NEXT_CONN_PARAMS_UPDATE_DELAY   APP_TIMER_TICKS(30000, APP_TIMER_PRESCALER)/**< Time between each call to sd_ble_gap_conn_param_update after the first call (30 seconds). */
+#define MAX_CONN_PARAMS_UPDATE_COUNT    3                                          /**< Number of attempts before giving up the connection parameter negotiation. */
 
-#define SEC_PARAM_BOND                   1                                          /**< Perform bonding. */
-#define SEC_PARAM_MITM                   0                                          /**< Man In The Middle protection not required. */
-#define SEC_PARAM_IO_CAPABILITIES        BLE_GAP_IO_CAPS_NONE                       /**< No I/O capabilities. */
-#define SEC_PARAM_OOB                    0                                          /**< Out Of Band data not available. */
-#define SEC_PARAM_MIN_KEY_SIZE           7                                          /**< Minimum encryption key size. */
-#define SEC_PARAM_MAX_KEY_SIZE           16                                         /**< Maximum encryption key size. */
+#define SEC_PARAM_BOND                  1                                          /**< Perform bonding. */
+#define SEC_PARAM_MITM                  0                                          /**< Man In The Middle protection not required. */
+#define SEC_PARAM_IO_CAPABILITIES       BLE_GAP_IO_CAPS_NONE                       /**< No I/O capabilities. */
+#define SEC_PARAM_OOB                   0                                          /**< Out Of Band data not available. */
+#define SEC_PARAM_MIN_KEY_SIZE          7                                          /**< Minimum encryption key size. */
+#define SEC_PARAM_MAX_KEY_SIZE          16                                         /**< Maximum encryption key size. */
 
-#define DEAD_BEEF                        0xDEADBEEF                                 /**< Value used as error code on stack dump, can be used to identify stack location on stack unwind. */
+#define DEAD_BEEF                       0xDEADBEEF                                 /**< Value used as error code on stack dump, can be used to identify stack location on stack unwind. */
 
 static dm_application_instance_t        m_app_handle;                               /**< Application identifier allocated by device manager */
 
-static uint16_t                          m_conn_handle = BLE_CONN_HANDLE_INVALID;   /**< Handle of the current connection. */
+static uint16_t                         m_conn_handle = BLE_CONN_HANDLE_INVALID;   /**< Handle of the current connection. */
 
-static ButtonLedService_t* 							pButtonLedService;
+static ButtonLedService_t* 				pButtonLedService;
 
 /* YOUR_JOB: Declare all services structure your application is using
 static ble_xx_service_t                     m_xxs;
@@ -192,19 +191,6 @@ static void on_yys_evt(ble_yy_service_t     * p_yy_service,
     }
 }*/
 
-static void ledHandler(bool turnLedOn)
-{
-    SEGGER_RTT_printf(0, "Turning the LED %s\n", turnLedOn ? "on" : "off"); 
-    if (turnLedOn)
-    {
-        nrf_gpio_pin_clear(LED_PIN_NO);
-    }
-    else
-    {
-        nrf_gpio_pin_set(LED_PIN_NO);
-    }
-}
-
 /**@brief Function for initializing services that will be used by the application.
  */
 static void services_init(void)
@@ -233,7 +219,7 @@ static void services_init(void)
     APP_ERROR_CHECK(err_code);
     */
 		
-    pButtonLedService = createButtonLedService(ledHandler);
+    pButtonLedService = createButtonLedService();
 }
 
 
@@ -458,9 +444,9 @@ static void ble_stack_init(void)
  */
 void bsp_event_handler(bsp_event_t event)
 {
-		SEGGER_RTT_printf(0, "A BSP event was received; value = %d\n", event);
+	SEGGER_RTT_printf(0, "A BSP event was received; value = %d\n", event);
 
-		uint32_t err_code;
+	uint32_t err_code;
     switch (event)
     {
         case BSP_EVENT_SLEEP:
@@ -487,27 +473,27 @@ void bsp_event_handler(bsp_event_t event)
             break;
 
         case BSP_EVENT_KEY_0:
-			      SEGGER_RTT_printf(0, "Button 0 was pressed\n");
-						if (BUTTON_NO == BSP_BUTTON_0 && pButtonLedService != NULL && pButtonLedService->buttonHandler != NULL) (*pButtonLedService->buttonHandler)(pButtonLedService);
-						break;
+		   SEGGER_RTT_printf(0, "Button 0 was pressed\n");
+			if (BUTTON_NO == BSP_BUTTON_0 && pButtonLedService != NULL && pButtonLedService->buttonHandler != NULL) (*pButtonLedService->buttonHandler)(pButtonLedService);
+				break;
 
         case BSP_EVENT_KEY_1:
-						SEGGER_RTT_printf(0, "Button 1 was pressed\n"); 
-						if (BUTTON_NO == BSP_BUTTON_1 && pButtonLedService != NULL && pButtonLedService->buttonHandler != NULL) (*pButtonLedService->buttonHandler)(pButtonLedService);
-						break;
+			SEGGER_RTT_printf(0, "Button 1 was pressed\n"); 
+			if (BUTTON_NO == BSP_BUTTON_1 && pButtonLedService != NULL && pButtonLedService->buttonHandler != NULL) (*pButtonLedService->buttonHandler)(pButtonLedService);
+				break;
 
-				case BSP_EVENT_KEY_2:
-						SEGGER_RTT_printf(0, "Button 2 was pressed\n"); 
-						if (BUTTON_NO == BSP_BUTTON_2 && pButtonLedService != NULL && pButtonLedService->buttonHandler != NULL) (*pButtonLedService->buttonHandler)(pButtonLedService);
-						break;
+		case BSP_EVENT_KEY_2:
+			SEGGER_RTT_printf(0, "Button 2 was pressed\n"); 
+			if (BUTTON_NO == BSP_BUTTON_2 && pButtonLedService != NULL && pButtonLedService->buttonHandler != NULL) (*pButtonLedService->buttonHandler)(pButtonLedService);
+				break;
 
         case BSP_EVENT_KEY_3:
-						SEGGER_RTT_printf(0, "Button 3 was pressed\n"); 
-						if (BUTTON_NO == BSP_BUTTON_3 && pButtonLedService != NULL && pButtonLedService->buttonHandler != NULL) (*pButtonLedService->buttonHandler)(pButtonLedService);
-						break;
+			SEGGER_RTT_printf(0, "Button 3 was pressed\n"); 
+			if (BUTTON_NO == BSP_BUTTON_3 && pButtonLedService != NULL && pButtonLedService->buttonHandler != NULL) (*pButtonLedService->buttonHandler)(pButtonLedService);
+				break;
 
         default:
-					SEGGER_RTT_printf(0, "Unrecognized BSP event");
+			SEGGER_RTT_printf(0, "Unrecognized BSP event");
             break;
     }
 }
@@ -583,12 +569,12 @@ static void advertising_init(void)
     advdata.uuids_complete.uuid_cnt = sizeof(m_adv_uuids) / sizeof(m_adv_uuids[0]);
     advdata.uuids_complete.p_uuids  = m_adv_uuids;
 
-	  // Scan response data
-		ble_advdata_t srdata;
-		memset(&srdata, 0, sizeof(srdata));
-		ble_uuid_t srv_uuids[] = { {SERVICE_UUID, BLE_UUID_TYPE_VENDOR_BEGIN} };
-		srdata.uuids_complete.uuid_cnt = sizeof(srv_uuids) / sizeof(srv_uuids[0]);
-		srdata.uuids_complete.p_uuids = srv_uuids;
+	// Scan response data
+	ble_advdata_t srdata;
+	memset(&srdata, 0, sizeof(srdata));
+	ble_uuid_t srv_uuids[] = { {SERVICE_UUID, BLE_UUID_TYPE_VENDOR_BEGIN} };
+	srdata.uuids_complete.uuid_cnt = sizeof(srv_uuids) / sizeof(srv_uuids[0]);
+	srdata.uuids_complete.p_uuids = srv_uuids;
 
     ble_adv_modes_config_t options = {0};
     options.ble_adv_fast_enabled  = BLE_ADV_FAST_ENABLED;
@@ -643,31 +629,31 @@ int main(void)
     bool erase_bonds;
 
     // Initialize.
-	  SEGGER_RTT_printf(0, "Timers init\n");
+	SEGGER_RTT_printf(0, "Timers init\n");
     timers_init();
-	  SEGGER_RTT_printf(0, "ButtonsLed init\n");
+	SEGGER_RTT_printf(0, "ButtonsLed init\n");
     buttons_leds_init(&erase_bonds);
-	  SEGGER_RTT_printf(0, "BLE stack init\n");
+	SEGGER_RTT_printf(0, "BLE stack init\n");
     ble_stack_init();
-	  SEGGER_RTT_printf(0, "Device manager init\n");
+	SEGGER_RTT_printf(0, "Device manager init\n");
     device_manager_init(erase_bonds);
-	  SEGGER_RTT_printf(0, "GAP params init\n");
+	SEGGER_RTT_printf(0, "GAP params init\n");
     gap_params_init();
-	  SEGGER_RTT_printf(0, "Services init\n");
+	SEGGER_RTT_printf(0, "Services init\n");
     services_init();
-	  SEGGER_RTT_printf(0, "Advertising init\n");
+	SEGGER_RTT_printf(0, "Advertising init\n");
     advertising_init();
-	  SEGGER_RTT_printf(0, "Conn params init\n");
+	SEGGER_RTT_printf(0, "Conn params init\n");
     conn_params_init();
 
     // Start execution.
-	  SEGGER_RTT_printf(0, "Starting execution\n");
+	SEGGER_RTT_printf(0, "Starting execution\n");
     application_timers_start();
     err_code = ble_advertising_start(BLE_ADV_MODE_FAST);
     APP_ERROR_CHECK(err_code);
 
     // Enter main loop.
-	  SEGGER_RTT_printf(0, "Entering main loop\n");
+	SEGGER_RTT_printf(0, "Entering main loop\n");
     for (;;)
     {
         power_manage();
