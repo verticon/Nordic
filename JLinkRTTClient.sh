@@ -1,0 +1,2 @@
+/Applications/SEGGER/JLink/JLinkRTTClient
+

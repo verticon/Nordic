@@ -12,7 +12,7 @@
 
 7. Modify <SDK>/components/toolchain/gcc/Makefile.posix such that the three environment variables are correct for the local system.
 
-8. In a terminal, navigate to .../examples/peripheral/blinky/pca10028/blank/armgcc and execute make
+8. In a terminal, navigate to .../examples/peripheral/blinky/pca10028/blank/armgcc and execute make. You should see something similar to:
 
         rm -rf _build
         echo  Makefile
@@ -33,7 +33,15 @@
 
 10. Install Segger JLink from https://www.segger.com/downloads/jlink. This produced /Application/SEGGER and symlinks to it from /usr/local/bin     
 
-11. Again from a terminal at  .../examples/peripheral/blinky/pca10028/blank/armgcc, execute the following:
+11. Connecting the pca10028 dev board to a macOS usb port allows it to be accesed in several ways:
+
+    a) The board can be flashed via nrfjprog (see step 12)
+
+    b) The Segger JLink tools can be used. Running JLinkEXE (see JLinkCommander.sh) in a terminal window and then running JLinkRTTClient in another allows the RTT Client to display the output from the SEGGER_RTT_printf, etc statements being executed by the board's application.
+
+    c) /dev/tty.usbmodem141131 can be connected to by a terminal emulater, such as CoolTerm, to interact with the pca10028's uart.
+
+12. Again from a terminal at  .../examples/peripheral/blinky/pca10028/blank/armgcc, execute the following:
 
         /* Optional: erase target if not already blank */
         nrfjprog --family nRF51 -e 
@@ -48,7 +56,7 @@
 
 I downloaded rknrfgo from https://sourceforge.net/projects/rknrfgo/ The installer will optionally install command line tools. I allowed it and subsequently discovered that they had been placed in /usr/local/bin. The nrfjprog tool is one of them. I had previously installed nrfjprog as part of the  nRF5x Command Line Tools (step 9 above). It turns out that the two nrfjprog tools are not the same; executing nrfjprog with no arguments displays very different help. After installing rknrfgo I removed /usr/local/nRF5x-Command-Line-Tools_9_3_1_OSX/nrfjprog from the PATH.
 
-I have successfully built the ButtonLed application using Make and have used rknrfgo to load it to the PCA10028. (Strangely, rknrfgo's Program button is disabled but the Both button gets the job done.)
+I have successfully built the ButtonLed and GeneralPurposeData applications using Make and have used rknrfgo to load them to the PCA10028. (Strangely, rknrfgo's Program button is disabled but the Both button gets the job done.)
 
-I have not yet circled back to try step 11 in conjuction with the tools at /usr/local/nRF5x-Command-Line-Tools_9_3_1_OSX to load the ButtonLed application. When I do get around to it I will need to learn how to load the soft device (-e seems to wipe everything. Blink does not use a soft device)
+I have not yet circled back to try step 12 in conjuction with the tools at /usr/local/nRF5x-Command-Line-Tools_9_3_1_OSX to load the ButtonLed application. When I do get around to it I will need to learn how to load the soft device (-e seems to wipe everything. Blinky does not use a soft device)
 

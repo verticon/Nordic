@@ -1,0 +1,1 @@
+#define	SEGGER_LOGGING
