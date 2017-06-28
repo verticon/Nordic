@@ -1,7 +1,7 @@
 # Button Led
 ### An application that interacts with a Button and an LED on the Nordic PCA10028 Development Kit
 
-The application (Device Name = ButtonLed) provides a service (UUID = DCBA3164-1212-EFDE-1523-785FEF13D123) with two characteristics:  
+The application (Device Name = ButtonLed) provides a service (UUID = DCBA3154-1212-EFDE-1523-785FEF13D123) with two characteristics:  
 
 1. User Description = Button, Size = 1 byte, UUID =  DCBA1523-1212-EFDE-1523-785FEF13D123
 2. User Description = LED, Size = 1 byte, UUID =  DCBA1524-1212-EFDE-1523-785FEF13D123
